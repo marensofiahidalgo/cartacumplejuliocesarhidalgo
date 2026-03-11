@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjeta Cumpleaños Julio César Hidalgo</title>
+    
+    <style>
+        /* Fondo general de la página */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; 
+            font-family: 'Georgia', serif;
+        }
+
+        /* Contenedor de los corazones flotantes */
+        .fondo-corazones {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .corazon {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            transform: rotate(-45deg);
+            animation: flotar 6s infinite linear;
+            opacity: 0;
+            bottom: -50px;
+        }
+        .corazon::before,
+        .corazon::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: inherit;
+        }
+        .corazon::before { top: -8px; left: 0; }
+        .corazon::after { top: 0; left: 8px; }
+
+        /* Nuevos colores para los corazones */
+        .blanco { background-color: #FFFFFF; }
+        .verde-claro { background-color: #A8E6CF; } /* Verde bajito */
+
+        @keyframes flotar {
+            0% { transform: translateY(0) rotate(-45deg) scale(0.5); opacity: 0; }
+            10% { opacity: 0.6; }
+            50% { transform: translateY(-50vh) rotate(-45deg) scale(1); }
+            100% { transform: translateY(-120vh) rotate(-45deg) scale(0.5); opacity: 0; }
+        }
+
+        .corazon:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .corazon:nth-child(2) { left: 25%; animation-delay: 2s; }
+        .corazon:nth-child(3) { left: 40%; animation-delay: 4s; }
+        .corazon:nth-child(4) { left: 55%; animation-delay: 1s; }
+        .corazon:nth-child(5) { left: 70%; animation-delay: 5s; }
+        .corazon:nth-child(6) { left: 85%; animation-delay: 3s; }
+
+        /* SOBRE Y CARTA ANIMADA */
+        .contenedor-sobre {
+            position: relative;
+            width: 320px; 
+            height: 220px; 
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 50px; /* Reducido para mejor centrado inicial */
+        }
+
+        /* Bajamos el sobre un poco más para compensar la salida de la carta */
+        .contenedor-sobre.abierto {
+            transform: translateY(120px); 
+        }
+
+        .texto-clic {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #A8E6CF; /* Ajustado al verde bajito para combinar */
+            font-size: 14px;
+            font-weight: bold;
+            animation: parpadear 2s infinite;
+        }
+
+        @keyframes parpadear {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .sobre-espalda {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: #d4c5a5; 
+            border-radius: 5px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Hoja de la carta */
+        .carta {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 300px; 
+            height: 180px; 
+            background-color: #fdfae2; 
+            color: #2c2a25; 
+            padding: 20px 15px;
+            box-sizing: border-box;
+            border-radius: 2px;
+            z-index: 2; 
+            display: flex;
+            flex-direction: column;
+            background-image: repeating-linear-gradient(transparent, transparent 24px, rgba(200, 180, 140, 0.2) 25px);
+            background-attachment: local;
+            font-size: 13px; 
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s, height 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+            transform-origin: bottom center;
+        }
+
+        .carta-header { text-align: right; color: #888; font-size: 0.8em; margin-bottom: 3px; }
+        .carta-saludo { font-weight: bold; font-size: 1.05em; margin-bottom: 2px; color: #333; }
+        
+        .carta-cuerpo { 
+            margin: 5px 0; 
+            line-height: 1.6; 
+            flex-grow: 1; 
+            overflow-y: auto; 
+            padding-right: 5px;
+            text-align: justify;
+            font-style: italic;
+        }
+
+        .carta-cuerpo::-webkit-scrollbar { width: 3px; }
+        .carta-cuerpo::-webkit-scrollbar-thumb { background: #d4c5a5; }
+
+        .carta-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+            padding-top: 5px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .carta-despedida { 
+            text-align: right; 
+            font-weight: bold; 
+            font-size: 0.85em;
+            line-height: 1.2;
+        }
+
+        .info-cancion {
+            display: flex; 
+            align-items: center; 
+            gap: 4px;
+            font-size: 0.75em;
+            color: #888;
+            max-width: 60%;
+        }
+
+        .info-cancion svg { width: 10px; height: 10px; fill: #e63946; }
+
+        /* Frente del sobre */
+        .solapas-frente {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3;
+            clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+            background-color: #e6d7b8;
+        }
+
+        .solapa-arriba {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ebd9b4; clip-path: polygon(0 0, 100% 0, 50% 55%);
+            z-index: 4; transform-origin: top;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .sello-corazon {
+            position: absolute; top: 40%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            width: 20px; height: 20px; background-color: #e63946;
+        }
+        .sello-corazon::before, .sello-corazon::after {
+            content: ''; position: absolute; width: 20px; height: 20px;
+            background-color: inherit; border-radius: 50%;
+        }
+        .sello-corazon::before { top: -10px; left: 0; }
+        .sello-corazon::after { top: 0; left: 10px; }
+
+        /* ESTADO ABIERTO: Ajustes corregidos para que no suba demasiado */
+        .contenedor-sobre.abierto .solapa-arriba {
+            transform: rotateX(180deg);
+            z-index: 1; 
+        }
+
+        .contenedor-sobre.abierto .carta {
+            height: 350px; /* Altura más contenida */
+            transform: translateY(-240px); /* Subida ajustada para que se vea "normal" */
+            z-index: 20; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .contenedor-sobre.abierto .texto-clic { opacity: 0; pointer-events: none; }
+
+        /* ADAPTACIÓN MÓVIL */
+        @media (max-width: 400px) {
+            .contenedor-sobre { width: 280px; height: 190px; }
+            .carta { width: 260px; font-size: 12px; }
+            .contenedor-sobre.abierto { transform: translateY(110px); }
+            .contenedor-sobre.abierto .carta {
+                height: 320px;
+                transform: translateY(-220px);
+            }
+        }
+
+        @media (max-height: 600px) {
+            .contenedor-sobre.abierto { transform: translateY(150px); }
+            .contenedor-sobre.abierto .carta { height: 280px; transform: translateY(-200px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fondo-corazones">
+        <div class="corazon blanco"></div>
+        <div class="corazon verde-claro"></div>
+        <div class="corazon blanco"></div>
+        <div class="corazon verde-claro"></div>
+        <div class="corazon blanco"></div>
+        <div class="corazon verde-claro"></div>
+    </div>
+
+    <div class="contenedor-sobre" id="sobre" onclick="alternarCarta()">
+        <div class="texto-clic">Toca para abrir</div>
+        
+        <div class="sobre-espalda"></div>
+        
+        <div class="carta" onclick="event.stopPropagation();">
+            <div class="carta-header">11 de Marzo de 2026</div>
+            <div class="carta-saludo">Para: Julio César Hidalgo</div>
+            
+            <div class="carta-cuerpo">
+                Feliz cumpleaños papi<br><br>
+                Hoy quiero desearte un feliz cumpleaños, papá.<br>
+                Quiero que sepas lo orgullosa que estoy de ti. Eres el hombre que más admiro en todo el mundo, por tu esfuerzo, tu forma de ser y todo lo que haces cada día. Para mí eres un ejemplo y una inspiración. Te amo muchísimo y no puedo dejar de agradecerle a Dios, a la vida y al universo por tenerte en mi vida y por darme la bendición de ser tu hija. Tenerte como papá es uno de los regalos más grandes que tengo.<br>
+                Deseo de todo corazón que tengas un cumpleaños lleno de alegría, salud y amor. Hoy que es un día especial, quiero que sepas que yo celebro tu vida todos los días, porque eres una persona increíble.<br><br>
+                Gracias por ser el mejor papá del mundo.<br><br>
+                
+            </div>
+            
+            <div class="carta-footer">
+                <div class="info-cancion">
+                    <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                    <span>Cuando Yo Quería Ser Grande - Alejandro Fernández</span>
+                </div>
+                <div class="carta-despedida">Con mucho amor,<br>Maren Sofía Hidalgo</div>
+            </div>
+        </div>
+
+        <div class="solapas-frente"></div>
+        <div class="solapa-arriba"><div class="sello-corazon"></div></div>
+    </div>
+
+    <audio id="musica" loop>
+        <source src="cancion/Alejandro Fernández - Cuando Yo Quería Ser Grande.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        function alternarCarta() {
+            const sobre = document.getElementById('sobre');
+            const musica = document.getElementById('musica');
+
+            if (sobre.classList.contains('abierto')) {
+                sobre.classList.remove('abierto');
+                musica.pause();
+            } else {
+                sobre.classList.add('abierto');
+                musica.play().catch(e => {
+                    console.log("El navegador requiere interacción para reproducir audio.");
+                });
+            }
+        }
+    </script>
+</body>
+</html>
